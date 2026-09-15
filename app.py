@@ -1,16 +1,23 @@
 import os
+
+# Constrain thread thrashing on limited CPU cores
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["ONNXRUNTIME_NUM_THREADS"] = "1"
+
 import gradio as gr
 from llama_index.core import StorageContext, load_index_from_storage, Settings
 from llama_index.embeddings.fastembed import FastEmbedEmbedding
 
-# Matching lightweight embedding
+# Matching lightweight FastEmbed model
 Settings.embed_model = FastEmbedEmbedding(model_name="BAAI/bge-small-en-v1.5")
 Settings.llm = None
 
 PERSIST_DIR = "./storage"
 storage_context = StorageContext.from_defaults(persist_dir=PERSIST_DIR)
 index = load_index_from_storage(storage_context)
-retriever = index.as_retriever(similarity_top_k=3)
+
+# Retrieve top 2 matches to minimize similarity scan time
+retriever = index.as_retriever(similarity_top_k=2)
 
 def answer_query(message, history):
     if not message or not message.strip():
