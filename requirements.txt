@@ -1,5 +1,4 @@
 gradio
 llama-index-core
-llama-index-embeddings-huggingface
-sentence-transformers
-torch
+llama-index-embeddings-fastembed
+fastembed
