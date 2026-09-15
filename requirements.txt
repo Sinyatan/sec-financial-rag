@@ -1,4 +1,4 @@
-gradio
+streamlit
 llama-index-core
 llama-index-embeddings-fastembed
 fastembed
