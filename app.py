@@ -5,13 +5,13 @@ from llama_index.core import (
     StorageContext,
     load_index_from_storage,
 )
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.embeddings.fastembed import FastEmbedEmbedding
 from llama_index.llms.google_genai import GoogleGenAI
 
 # 1. Models & Configuration (Render provides GOOGLE_API_KEY via environment variables)
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY", "")
 Settings.llm = GoogleGenAI(model="gemini-3-flash-preview")
-Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
+Settings.embed_model = FastEmbedEmbedding(model_name="BAAI/bge-small-en-v1.5")
 
 # 2. Load Local Index
 PERSIST_DIR = "./storage"
