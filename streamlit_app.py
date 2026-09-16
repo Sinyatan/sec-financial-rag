@@ -6,7 +6,7 @@ from llama_index.embeddings.fastembed import FastEmbedEmbedding
 
 st.set_page_config(page_title="SEC Financial Filing RAG Assistant", layout="wide")
 
-# Modern, clean card UI matching enterprise portals
+# Modern card styling matching enterprise portals
 st.markdown("""
 <style>
     .result-card {
@@ -70,11 +70,8 @@ with st.spinner("Initializing filing index..."):
 query = st.text_input("Enter your research question (e.g. liquidity risks, credit exposure, litigation):")
 
 def clean_sec_text(raw_text: str) -> str:
-    # Decode escaped HTML entities
     text = html.unescape(raw_text)
-    # Strip HTML tags (including style attributes, spans, and divs)
     text = re.sub(r"<[^>]+>", " ", text)
-    # Collapse irregular multi-spaces while preserving standard paragraph flow
     text = re.sub(r"[ \t]+", " ", text)
     return text.strip()
 
