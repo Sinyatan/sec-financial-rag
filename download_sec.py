@@ -22,14 +22,14 @@ if os.path.exists(base_dir):
         with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
           text_content = f.read()
 
-        # Hardcode correct CIK lookup for Apple or use general SEC company search
-        # Apple's CIK is 0000320193
+        # Official SEC EDGAR company browse URL for Apple Inc. (CIK 0000320193)
+        # This guarantees it opens the exact official filing company record directly.
         sec_url = "https://www.sec.gov/edgar/browse/?CIK=0000320193"
 
         doc = Document(
             text=text_content,
             metadata={
-                "file_name": file,
+                "file_name": "Apple 10-K Filing",
                 "source_url": sec_url,
             },
         )
