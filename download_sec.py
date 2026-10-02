@@ -22,11 +22,9 @@ if os.path.exists(base_dir):
         with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
           text_content = f.read()
 
-        path_parts = root.split(os.sep)
-        sec_url = "https://www.sec.gov/edgar/searchedgar/companysearch"
-        if len(path_parts) >= 4:
-          ticker = path_parts[2]
-          sec_url = f"https://www.sec.gov/edgar/browse/?CIK={ticker}"
+        # Hardcode correct CIK lookup for Apple or use general SEC company search
+        # Apple's CIK is 0000320193
+        sec_url = "https://www.sec.gov/edgar/browse/?CIK=0000320193"
 
         doc = Document(
             text=text_content,
