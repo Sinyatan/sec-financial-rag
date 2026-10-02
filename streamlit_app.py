@@ -3,10 +3,13 @@ import streamlit as st
 from llama_index.core import Settings, StorageContext, load_index_from_storage
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
+# Set page layout to match your professional multi-column dashboard
 st.set_page_config(page_title="SEC Financial Filing RAG Assistant", layout="wide")
 
 st.markdown("## 📊 SEC Financial Filing RAG Assistant")
-st.caption("Query 10-K and 10-Q corporate disclosures with grounded semantic search.")
+st.caption(
+    "Query 10-K and 10-Q corporate disclosures with grounded semantic search."
+)
 
 
 @st.cache_resource
@@ -43,15 +46,13 @@ if st.button("Search Filings", type="primary") or query:
         st.markdown("---")
         st.subheader("Sources")
 
+        # Multi-column layout matching your professional dashboard view
         cols = st.columns(len(nodes))
         for idx, (col, node) in enumerate(zip(cols, nodes), start=1):
           source_file = node.metadata.get("file_name", f"Filing_{idx}")
-          # Fallback to direct official SEC EDGAR search if URL is broken or missing
-          sec_url = node.metadata.get("source_url")
-          if not sec_url or "CIK=10-K" in sec_url:
-            sec_url = (
-                "https://www.sec.gov/edgar/searchedgar/companysearch"  # Safe default link
-            )
+          sec_url = node.metadata.get(
+              "source_url", "https://www.sec.gov/edgar/browse/?CIK=0000320193"
+          )
 
           with col:
             card_html = f"""
@@ -69,9 +70,13 @@ if st.button("Search Filings", type="primary") or query:
         st.subheader("Detailed Record & Metadata View")
         for idx, node in enumerate(nodes, start=1):
           source_file = node.metadata.get("file_name", f"Filing_{idx}")
+          sec_url = node.metadata.get(
+              "source_url", "https://www.sec.gov/edgar/browse/?CIK=0000320193"
+          )
           with st.expander(
               f"📄 Source [{idx}] Details: {source_file}", expanded=(idx == 1)
           ):
             st.markdown(f"**Source File:** `{source_file}`")
+            st.markdown(f"[🔗 Open Direct Filing URL]({sec_url})")
             st.markdown("**Retrieved Excerpt & Context:**")
             st.markdown(clean_html(node.text.strip()))
